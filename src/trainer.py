@@ -217,7 +217,8 @@ class Trainer(object):
         Save the best model for the given validation metric.
         """
         # best mapping for the given validation criterion
-        if to_log[metric] > self.best_valid_metric:
+        # if to_log[metric] > self.best_valid_metric:
+        if True:
             # new best mapping
             self.best_valid_metric = to_log[metric]
             logger.info('* Best value for "%s": %.5f' % (metric, to_log[metric]))

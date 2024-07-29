@@ -51,7 +51,7 @@ parser.add_argument("--dis_smooth", type=float, default=0.1, help="Discriminator
 parser.add_argument("--dis_clip_weights", type=float, default=0, help="Clip discriminator weights (0 to disable)")
 # training adversarial
 parser.add_argument("--adversarial", type=bool_flag, default=True, help="Use adversarial training")
-parser.add_argument("--n_epochs", type=int, default=5, help="Number of epochs")
+parser.add_argument("--n_epochs", type=int, default=3, help="Number of epochs")
 parser.add_argument("--epoch_size", type=int, default=1000000, help="Iterations per epoch")
 parser.add_argument("--batch_size", type=int, default=32, help="Batch size")
 parser.add_argument("--map_optimizer", type=str, default="sgd,lr=0.1", help="Mapping optimizer")
@@ -136,8 +136,8 @@ if params.adversarial:
 
         # embeddings / discriminator evaluation
         to_log = OrderedDict({'n_epoch': n_epoch})
-        evaluator.all_eval(to_log)
-        evaluator.eval_dis(to_log)
+        # evaluator.all_eval(to_log)
+        # evaluator.eval_dis(to_log)
 
         # JSON log / save best model / end of epoch
         logger.info("__log__:%s" % json.dumps(to_log))
@@ -145,10 +145,11 @@ if params.adversarial:
         logger.info('End of epoch %i.\n\n' % n_epoch)
 
         # update the learning rate (stop if too small)
-        trainer.update_lr(to_log, VALIDATION_METRIC)
-        if trainer.map_optimizer.param_groups[0]['lr'] < params.min_lr:
-            logger.info('Learning rate < 1e-6. BREAK.')
-            break
+        # trainer.update_lr(to_log, VALIDATION_METRIC)
+        # trainer.update_lr()
+        # if trainer.map_optimizer.param_groups[0]['lr'] < params.min_lr:
+        #     logger.info('Learning rate < 1e-6. BREAK.')
+        #     break
 
 
 """
@@ -172,7 +173,7 @@ if params.n_refinement > 0:
 
         # embeddings evaluation
         to_log = OrderedDict({'n_iter': n_iter})
-        evaluator.all_eval(to_log)
+        # evaluator.all_eval(to_log)
 
         # JSON log / save best model / end of epoch
         logger.info("__log__:%s" % json.dumps(to_log))
