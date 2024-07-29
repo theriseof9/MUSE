@@ -91,6 +91,7 @@ assert params.dico_eval == '' or os.path.isfile(params.dico_eval)
 assert params.export in ["", "txt", "pth"]
 
 # build model / trainer / evaluator
+
 logger = initialize_exp(params)
 src_emb, tgt_emb, mapping, discriminator = build_model(params, True)
 trainer = Trainer(src_emb, tgt_emb, mapping, discriminator, params)
@@ -173,7 +174,7 @@ if params.n_refinement > 0:
 
         # embeddings evaluation
         to_log = OrderedDict({'n_iter': n_iter})
-        # evaluator.all_eval(to_log)
+        evaluator.all_eval(to_log)
 
         # JSON log / save best model / end of epoch
         logger.info("__log__:%s" % json.dumps(to_log))
