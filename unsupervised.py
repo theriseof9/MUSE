@@ -20,7 +20,7 @@ from src.evaluation import Evaluator
 
 
 VALIDATION_METRIC = 'mean_cosine-csls_knn_10-S2T-10000'
-
+# VALIDATION_METRIC = 'DIS_COSTS'
 
 # main
 parser = argparse.ArgumentParser(description='Unsupervised training')
@@ -136,8 +136,8 @@ if params.adversarial:
 
         # embeddings / discriminator evaluation
         to_log = OrderedDict({'n_epoch': n_epoch})
-        # evaluator.all_eval(to_log)
-        # evaluator.eval_dis(to_log)
+        evaluator.all_eval(to_log)
+        evaluator.eval_dis(to_log)
 
         # JSON log / save best model / end of epoch
         logger.info("__log__:%s" % json.dumps(to_log))
@@ -145,11 +145,11 @@ if params.adversarial:
         logger.info('End of epoch %i.\n\n' % n_epoch)
 
         # update the learning rate (stop if too small)
-        # trainer.update_lr(to_log, VALIDATION_METRIC)
+        trainer.update_lr(to_log, VALIDATION_METRIC)
         # trainer.update_lr()
-        # if trainer.map_optimizer.param_groups[0]['lr'] < params.min_lr:
-        #     logger.info('Learning rate < 1e-6. BREAK.')
-        #     break
+        if trainer.map_optimizer.param_groups[0]['lr'] < params.min_lr:
+            logger.info('Learning rate < 1e-6. BREAK.')
+            break
 
 
 """
